@@ -1,3 +1,4 @@
+require "hive/paths/queues"
 
 module Hive
   module Paths
