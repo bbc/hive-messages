@@ -5,6 +5,8 @@ module Hive
       include Virtus.model
 
       attribute :base_path, String
+      attribute :pem_file, String
+      attribute :ssl_verify_mode, String, default: OpenSSL::SSL::VERIFY_PEER
     end
   end
 end
