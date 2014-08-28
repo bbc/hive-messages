@@ -1,5 +1,6 @@
 require "virtus"
 require "roar/representer/json"
+require "openssl"
 
 require "active_support"
 require "active_support/core_ext/object/json"
@@ -17,6 +18,10 @@ module Hive
 
     class << self
       attr_accessor :configuration
+
+      def root
+        File.expand_path '../../..', __FILE__
+      end
 
       def configure
 
