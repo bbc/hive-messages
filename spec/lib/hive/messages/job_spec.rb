@@ -1,6 +1,7 @@
 require "spec_helper"
 require "shoulda/matchers"
 require "shoulda/matchers/active_model/validate_presence_of_matcher"
+require 'webmock/rspec'
 
 describe Hive::Messages::Job, type: :model do
 
@@ -52,6 +53,32 @@ describe Hive::Messages::Job, type: :model do
     end
   end
 
+  describe "class methods" do
+
+    describe ".reserve" do
+
+      let(:base_path)           { "http://hive.bbc" }
+      let(:remote_job)          { Hive::Messages::Job.new(job_id: 99, command: "cmd", repository: "repository") }
+      let(:queue_names)         { ["queue_one", "queue_two"] }
+      let(:reservation_details) { { hive_id: 99, worker_pid: 1024 } }
+
+      before(:each) do
+        Hive::Messages.configure { |config| config.base_path = base_path }
+        stub_request(:patch, Hive::Paths::Queues.job_reservation_path(queue_names))
+          .with( body: {reservation_details: reservation_details}.to_json, headers: { "Content-Type" => "application/json" } )
+          .to_return( body: remote_job.to_json )
+      end
+
+      let(:reservation)         { Hive::Messages::Job.reserve(queue_names, reservation_details) }
+
+      describe "reserved job" do
+
+        subject { Hive::Messages::Job.reserve(queue_names, reservation_details) }
+
+        its(:job_id) { should eq remote_job.job_id }
+        its(:command) { should eq remote_job.command }
+        its(:repository) { should eq remote_job.repository }
+      end
     end
   end
 end

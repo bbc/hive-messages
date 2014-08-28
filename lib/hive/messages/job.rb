@@ -20,6 +20,15 @@ module Hive
       attribute :reservation_details, Hash
 
       validates :command, :job_id, :repository, :execution_directory, :target, :execution_variables, presence: true
+
+      class << self
+
+        def reserve(queues, reservation_details)
+          job = self.new
+          job.reservation_details = reservation_details
+          job.patch(uri: Hive::Paths::Queues.job_reservation_path(queues), as: "application/json")
+        end
+      end
     end
   end
 end
