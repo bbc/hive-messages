@@ -17,6 +17,7 @@ module Hive
       attribute :execution_directory, String
       attribute :target, Hash
       attribute :execution_variables, ExecutionVariables
+      attribute :reservation_details, Hash
 
       validates :command, :job_id, :repository, :execution_directory, :target, :execution_variables, presence: true
     end

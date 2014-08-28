@@ -1,5 +1,6 @@
 require "spec_helper"
 require "shoulda/matchers"
+require "shoulda/matchers/active_model/validate_presence_of_matcher"
 
 describe Hive::Messages::Job, type: :model do
 
@@ -22,7 +23,8 @@ describe Hive::Messages::Job, type: :model do
           repository:          "svn://...",
           execution_directory: "/some_dir",
           target:              { application_url: "http://www.bbc.co.uk/mobile", application_url_parameters: "thing=value" },
-          execution_variables: { job_id: 99, version: "1.0", queue_name: "nexus-4", run_id: "88", tests: ["test one", "test two"] }
+          execution_variables: { job_id: 99, version: "1.0", queue_name: "nexus-4", run_id: "88", tests: ["test one", "test two"] },
+          reservation_details: { hive_id: 99, pid: 1024 }
       }
     end
 
@@ -46,6 +48,10 @@ describe Hive::Messages::Job, type: :model do
       its(:execution_directory) { job_attributes[:execution_directory] }
       its(:target)              { job_attributes[:target] }
       its(:execution_variables) { job_attributes[:execution_variables] }
+      its(:execution_variables) { job_attributes[:reservation_details] }
+    end
+  end
+
     end
   end
 end

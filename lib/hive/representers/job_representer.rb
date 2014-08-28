@@ -10,6 +10,7 @@ module Hive
       property :execution_directory
       property :target
       property :execution_variables
+      property :reservation_details
     end
   end
 end

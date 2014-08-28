@@ -11,6 +11,7 @@ describe Hive::Representers::JobRepresenter do
     attribute :execution_directory
     attribute :target
     attribute :execution_variables
+    attribute :reservation_details
     attribute :extra
   end
 
@@ -22,6 +23,8 @@ describe Hive::Representers::JobRepresenter do
 
   let(:target) { { "build" => "http://hive/download/99" } }
   let(:execution_variables) { { "tests" => [] } }
+  let(:reservation_details) { { "hive" => "99", "pid" => "1024" } }
+
 
   let(:job_attributes) do
     {
@@ -31,6 +34,7 @@ describe Hive::Representers::JobRepresenter do
         execution_directory: ".",
         target:              target,
         execution_variables: execution_variables,
+        reservation_details: reservation_details,
         extra:               "thing"
     }
   end
@@ -53,6 +57,7 @@ describe Hive::Representers::JobRepresenter do
     its(:execution_directory) { should eq job_attributes[:execution_directory] }
     its(:target) { should eq job_attributes[:target] }
     its(:execution_variables) { should eq execution_variables }
+    its(:reservation_details) { should eq reservation_details }
     its(:extra) { should be_nil }
   end
 end
