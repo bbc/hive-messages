@@ -26,9 +26,11 @@ module Hive
         def reserve(queues, reservation_details)
           job = self.new
           job.reservation_details = reservation_details
-          job.patch(uri: Hive::Paths::Queues.job_reservation_path(queues), as: "application/json")
+          job.patch(uri: Hive::Paths::Queues.job_reservation_url(queues), as: "application/json")
         end
       end
+
+
     end
   end
 end

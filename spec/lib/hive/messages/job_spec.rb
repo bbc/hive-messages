@@ -64,7 +64,7 @@ describe Hive::Messages::Job, type: :model do
 
       before(:each) do
         Hive::Messages.configure { |config| config.base_path = base_path }
-        stub_request(:patch, Hive::Paths::Queues.job_reservation_path(queue_names))
+        stub_request(:patch, Hive::Paths::Queues.job_reservation_url(queue_names))
           .with( body: {reservation_details: reservation_details}.to_json, headers: { "Content-Type" => "application/json" } )
           .to_return( body: remote_job.to_json )
       end

@@ -5,7 +5,7 @@ module Hive
 
       class << self
 
-        def job_reservation_path(queues)
+        def job_reservation_url(queues)
           queues=[*queues].join(",")
           "#{queues_base}/#{queues}/jobs/reserve"
         end

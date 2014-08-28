@@ -4,17 +4,17 @@ describe Hive::Paths::Queues do
 
   describe "class methods" do
 
-    let(:base_path) { "http://localhost:3000" }
+    let(:base_path) { "http://hive.bbc" }
 
     before(:each) do
       Hive::Paths.base=base_path
     end
 
-    describe ".job_reservation_path" do
+    describe ".job_reservation_url" do
 
       let(:queues) { ["queue_one", "queue_two"] }
 
-      let(:job_reservation_path) { Hive::Paths::Queues.job_reservation_path(queues) }
+      let(:job_reservation_url) { Hive::Paths::Queues.job_reservation_url(queues) }
 
       context "single queue name provided" do
 
