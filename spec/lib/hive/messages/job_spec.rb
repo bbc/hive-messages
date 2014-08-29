@@ -25,7 +25,9 @@ describe Hive::Messages::Job, type: :model do
           execution_directory: "/some_dir",
           target:              { application_url: "http://www.bbc.co.uk/mobile", application_url_parameters: "thing=value" },
           execution_variables: { job_id: 99, version: "1.0", queue_name: "nexus-4", run_id: "88", tests: ["test one", "test two"] },
-          reservation_details: { hive_id: 99, pid: 1024 }
+          reservation_details: { hive_id: 99, pid: 1024 },
+          device_id:           23
+
       }
     end
 
@@ -43,13 +45,16 @@ describe Hive::Messages::Job, type: :model do
       let(:job_message) { Hive::Messages::Job.new.from_json(job_attributes.to_json) }
       subject { job_message }
 
-      its(:command)             { job_attributes[:command] }
-      its(:job_id)              { job_attributes[:job_id] }
-      its(:repository)          { job_attributes[:repository] }
-      its(:execution_directory) { job_attributes[:execution_directory] }
-      its(:target)              { job_attributes[:target] }
-      its(:execution_variables) { job_attributes[:execution_variables] }
-      its(:execution_variables) { job_attributes[:reservation_details] }
+      its(:command)             { should eq job_attributes[:command] }
+      its(:job_id)              { should eq job_attributes[:job_id] }
+      its(:repository)          { should eq job_attributes[:repository] }
+      its(:execution_directory) { should eq job_attributes[:execution_directory] }
+      its(:target)              { should eq job_attributes[:target].stringify_keys }
+      it "assigned the correct values to the execution variables object" do
+        expect(job_message.execution_variables.attributes).to eq job_attributes[:execution_variables]
+      end
+      its(:reservation_details) { should eq job_attributes[:reservation_details].stringify_keys }
+      its(:device_id)           { should eq job_attributes[:device_id] }
     end
   end
 

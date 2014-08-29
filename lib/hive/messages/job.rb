@@ -18,6 +18,7 @@ module Hive
       attribute :target, Hash
       attribute :execution_variables, ExecutionVariables
       attribute :reservation_details, Hash
+      attribute :device_id, Integer
 
       validates :command, :job_id, :repository, :execution_directory, :target, :execution_variables, presence: true
 
