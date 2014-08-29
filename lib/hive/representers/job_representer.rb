@@ -11,6 +11,7 @@ module Hive
       property :target
       property :execution_variables
       property :reservation_details
+      property :device_id
     end
   end
 end

@@ -12,6 +12,7 @@ describe Hive::Representers::JobRepresenter do
     attribute :target
     attribute :execution_variables
     attribute :reservation_details
+    attribute :device_id
     attribute :extra
   end
 
@@ -35,6 +36,7 @@ describe Hive::Representers::JobRepresenter do
         target:              target,
         execution_variables: execution_variables,
         reservation_details: reservation_details,
+        device_id:           23,
         extra:               "thing"
     }
   end
@@ -51,13 +53,14 @@ describe Hive::Representers::JobRepresenter do
 
     subject { downstream_job }
 
-    its(:command) { should eq job_attributes[:command] }
-    its(:job_id) { should eq job_attributes[:job_id] }
-    its(:repository) { should eq job_attributes[:repository] }
+    its(:command)             { should eq job_attributes[:command] }
+    its(:job_id)              { should eq job_attributes[:job_id] }
+    its(:repository)          { should eq job_attributes[:repository] }
     its(:execution_directory) { should eq job_attributes[:execution_directory] }
-    its(:target) { should eq job_attributes[:target] }
+    its(:target)              { should eq job_attributes[:target] }
     its(:execution_variables) { should eq execution_variables }
     its(:reservation_details) { should eq reservation_details }
-    its(:extra) { should be_nil }
+    its(:device_id)           { should eq job_attributes[:device_id] }
+    its(:extra)               { should be_nil }
   end
 end
