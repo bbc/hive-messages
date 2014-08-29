@@ -31,7 +31,10 @@ module Hive
         end
       end
 
-
+      def start(device_id)
+        self.device_id = device_id
+        self.put(uri: Hive::Paths::Jobs.start_url(self.job_id), as: "application/json", body: {device_id: device_id})
+      end
     end
   end
 end

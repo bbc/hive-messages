@@ -86,4 +86,34 @@ describe Hive::Messages::Job, type: :model do
       end
     end
   end
+
+  describe "instance methods" do
+
+    let(:base_path)   { "http://hive.bbc" }
+    let(:remote_job)  { Hive::Messages::Job.new(job_id: 99, command: "cmd", repository: "repository") }
+
+    before(:each) do
+      Hive::Messages.configure { |config| config.base_path = base_path }
+    end
+
+    describe "#start" do
+
+      let(:job_id)    { 99 }
+      let(:device_id) { 33 }
+
+      let!(:stubbed_request) do
+        stub_request(:put, Hive::Paths::Jobs.start_url(job_id))
+        .with( body: {job_id: job_id, device_id: device_id}.to_json, headers: { "Content-Type" => "application/json" } )
+        .to_return( body: remote_job.to_json )
+      end
+
+      before(:each) do
+        Hive::Messages::Job.new(job_id: job_id).start(device_id)
+      end
+
+      it "made the request to start the job" do
+        expect(stubbed_request).to have_been_requested
+      end
+    end
+  end
 end
