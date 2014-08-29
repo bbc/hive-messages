@@ -2,8 +2,13 @@ require "virtus"
 require "roar/representer/json"
 require "openssl"
 
-require "active_support"
-require "active_support/core_ext/object/json"
+require "active_support/version"
+
+if ActiveSupport.version >= Gem::Version.new("4.1")
+  require "active_support/core_ext/object/json"
+else
+  require "active_support/core_ext/object/to_json"
+end
 
 require "hive/messages/version"
 require "hive/paths"
