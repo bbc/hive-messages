@@ -21,13 +21,13 @@ describe Hive::Paths::Queues do
         let(:queues) { "queue_one" }
 
         it "adds the single queue to the reservation path" do
-          expect(job_reservation_path).to eq "#{base_path}/api/queues/queue_one/jobs/reserve"
+          expect(job_reservation_url).to eq "#{base_path}/api/queues/queue_one/jobs/reserve"
         end
       end
 
       context "multiple queue names provided" do
         it "adds the provided queues to the reservation path" do
-          expect(job_reservation_path).to eq "#{base_path}/api/queues/queue_one,queue_two/jobs/reserve"
+          expect(job_reservation_url).to eq "#{base_path}/api/queues/queue_one,queue_two/jobs/reserve"
         end
       end
     end
