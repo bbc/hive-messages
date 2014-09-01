@@ -10,7 +10,7 @@ describe Hive::Paths::Jobs do
       Hive::Paths.base = base_path
     end
 
-    describe ".start_path" do
+    describe ".start_url" do
 
       let(:job_id) { 99 }
 
@@ -18,6 +18,17 @@ describe Hive::Paths::Jobs do
 
       it "generates a valid job start url" do
         expect(start_path).to eq "#{base_path}/api/jobs/#{job_id.to_s}/start"
+      end
+    end
+
+    describe ".end_url" do
+
+      let(:job_id) { 99 }
+
+      let(:start_path) { Hive::Paths::Jobs.end_url(job_id) }
+
+      it "generates a valid job start url" do
+        expect(start_path).to eq "#{base_path}/api/jobs/#{job_id.to_s}/end"
       end
     end
   end
