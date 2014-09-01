@@ -90,7 +90,9 @@ describe Hive::Messages::Job, type: :model do
   describe "instance methods" do
 
     let(:base_path)   { "http://hive.bbc" }
-    let(:remote_job)  { Hive::Messages::Job.new(job_id: 99, command: "cmd", repository: "repository") }
+    let(:remote_job)  { Hive::Messages::Job.new(job_id: job_id, command: "cmd", repository: "repository") }
+
+    let(:job_id)    { 99 }
 
     before(:each) do
       Hive::Messages.configure { |config| config.base_path = base_path }
@@ -98,11 +100,10 @@ describe Hive::Messages::Job, type: :model do
 
     describe "#start" do
 
-      let(:job_id)    { 99 }
       let(:device_id) { 33 }
 
       let!(:stubbed_request) do
-        stub_request(:put, Hive::Paths::Jobs.start_url(job_id))
+        stub_request(:patch, Hive::Paths::Jobs.start_url(job_id))
         .with( body: {job_id: job_id, device_id: device_id}.to_json, headers: { "Content-Type" => "application/json" } )
         .to_return( body: remote_job.to_json )
       end
@@ -114,6 +115,24 @@ describe Hive::Messages::Job, type: :model do
       it "made the request to start the job" do
         expect(stubbed_request).to have_been_requested
       end
+    end
+
+    describe "#end" do
+
+      let!(:stubbed_request) do
+        stub_request(:patch, Hive::Paths::Jobs.end_url(job_id))
+        .with( body: {job_id: job_id}.to_json, headers: { "Content-Type" => "application/json" } )
+        .to_return( body: remote_job.to_json )
+      end
+
+      before(:each) do
+        Hive::Messages::Job.new(job_id: job_id).end
+      end
+
+      it "made the request to start the job" do
+        expect(stubbed_request).to have_been_requested
+      end
+
     end
   end
 end
