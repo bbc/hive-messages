@@ -9,6 +9,10 @@ module Hive
           "#{jobs_base}/#{job_id.to_s}/start"
         end
 
+        def end_url(job_id)
+          "#{jobs_base}/#{job_id.to_s}/end"
+        end
+
         private
 
         def jobs_base
