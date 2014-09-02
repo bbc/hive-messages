@@ -16,6 +16,7 @@ describe Hive::Representers::JobRepresenter do
     attribute :running_count
     attribute :passed_count
     attribute :failed_count
+    attribute :state
     attribute :errored_count
 
     attribute :extra
@@ -46,6 +47,7 @@ describe Hive::Representers::JobRepresenter do
         passed_count:        3,
         failed_count:        2,
         errored_count:       1,
+        state:               "running",
         extra:               "thing"
     }
   end
@@ -74,6 +76,7 @@ describe Hive::Representers::JobRepresenter do
     its(:passed_count)        { should eq job_attributes[:passed_count] }
     its(:failed_count)        { should eq job_attributes[:failed_count] }
     its(:errored_count)       { should eq job_attributes[:errored_count] }
+    its(:state)               { should eq job_attributes[:state] }
     its(:extra)               { should be_nil }
   end
 end
