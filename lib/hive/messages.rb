@@ -1,6 +1,7 @@
 require "virtus"
 require "roar/representer/json"
 require "openssl"
+require "version"
 
 require "active_support/version"
 
@@ -10,7 +11,6 @@ else
   require "active_support/core_ext/object/to_json"
 end
 
-require "hive/messages/version"
 require "hive/paths"
 require "hive/messages/configuration"
 
@@ -20,6 +20,7 @@ require "hive/messages/job"
 
 module Hive
   module Messages
+    is_versioned
 
     class << self
       attr_accessor :configuration
