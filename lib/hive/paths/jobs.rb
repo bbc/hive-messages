@@ -17,6 +17,10 @@ module Hive
           "#{job_base(job_id)}/end"
         end
 
+        def error_url(job_id)
+          "#{job_base(job_id)}/error"
+        end
+
         private
 
         def job_base(job_id)
