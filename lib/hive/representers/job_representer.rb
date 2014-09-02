@@ -1,4 +1,3 @@
-
 module Hive
   module Representers
     module JobRepresenter
@@ -12,6 +11,10 @@ module Hive
       property :execution_variables
       property :reservation_details
       property :device_id
+      property :running_count
+      property :passed_count
+      property :failed_count
+      property :errored_count
     end
   end
 end
