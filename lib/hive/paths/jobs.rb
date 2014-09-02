@@ -25,11 +25,11 @@ module Hive
           "#{job_base(job_id)}/error"
         end
 
-        private
-
         def job_base(job_id)
           "#{jobs_base}/#{job_id.to_s}"
         end
+
+        private
 
         def jobs_base
           "#{Hive::Paths.base}/api/jobs"
