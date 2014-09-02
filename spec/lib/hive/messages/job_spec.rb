@@ -92,6 +92,8 @@ describe Hive::Messages::Job, type: :model do
     let(:base_path)   { "http://hive.bbc" }
     let(:remote_job)  { Hive::Messages::Job.new(job_id: job_id, command: "cmd", repository: "repository") }
 
+    let(:local_job) { Hive::Messages::Job.new(job_id: job_id) }
+
     let(:job_id)    { 99 }
 
     before(:each) do
@@ -109,7 +111,42 @@ describe Hive::Messages::Job, type: :model do
       end
 
       before(:each) do
-        Hive::Messages::Job.new(job_id: job_id).start(device_id)
+        local_job.start(device_id)
+      end
+
+      it "made the request to start the job" do
+        expect(stubbed_request).to have_been_requested
+      end
+    end
+
+
+    describe "#update_counts" do
+
+      let(:device_id) { 33 }
+
+      let(:running_count)  { 4 }
+      let(:failed_count)   { 3 }
+      let(:errored_count)  { 2 }
+      let(:passed_count)   { 1 }
+
+      let(:counts) {
+        {   running_count: running_count,
+            passed_count:  passed_count,
+            failed_count:  failed_count,
+            errored_count: errored_count
+        }
+      }
+
+      let!(:stubbed_request) do
+        stub_request(:patch, Hive::Paths::Jobs.update_counts_url(job_id))
+        .with( body:    {job_id:job_id}.merge(counts).to_json,
+               headers: { "Content-Type" => "application/json" }
+              )
+        .to_return( body: remote_job.to_json )
+      end
+
+      before(:each) do
+        local_job.update_counts(counts)
       end
 
       it "made the request to start the job" do
@@ -132,7 +169,6 @@ describe Hive::Messages::Job, type: :model do
       it "made the request to start the job" do
         expect(stubbed_request).to have_been_requested
       end
-
     end
   end
 end

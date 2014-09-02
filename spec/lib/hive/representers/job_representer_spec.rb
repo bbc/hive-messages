@@ -13,6 +13,11 @@ describe Hive::Representers::JobRepresenter do
     attribute :execution_variables
     attribute :reservation_details
     attribute :device_id
+    attribute :running_count
+    attribute :passed_count
+    attribute :failed_count
+    attribute :errored_count
+
     attribute :extra
   end
 
@@ -37,6 +42,10 @@ describe Hive::Representers::JobRepresenter do
         execution_variables: execution_variables,
         reservation_details: reservation_details,
         device_id:           23,
+        running_count:       4,
+        passed_count:        3,
+        failed_count:        2,
+        errored_count:       1,
         extra:               "thing"
     }
   end
@@ -61,6 +70,10 @@ describe Hive::Representers::JobRepresenter do
     its(:execution_variables) { should eq execution_variables }
     its(:reservation_details) { should eq reservation_details }
     its(:device_id)           { should eq job_attributes[:device_id] }
+    its(:running_count)       { should eq job_attributes[:running_count] }
+    its(:passed_count)        { should eq job_attributes[:passed_count] }
+    its(:failed_count)        { should eq job_attributes[:failed_count] }
+    its(:errored_count)       { should eq job_attributes[:errored_count] }
     its(:extra)               { should be_nil }
   end
 end
