@@ -32,5 +32,12 @@ describe Hive::Paths::Jobs do
         expect(Hive::Paths::Jobs.end_url(job_id)).to eq "#{base_path}/api/jobs/#{job_id.to_s}/end"
       end
     end
+
+    describe ".error_url" do
+
+      it "generates a valid job error url" do
+        expect(Hive::Paths::Jobs.error_url(job_id)).to eq "#{base_path}/api/jobs/#{job_id.to_s}/error"
+      end
+    end
   end
 end
