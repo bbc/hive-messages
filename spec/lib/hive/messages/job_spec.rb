@@ -170,5 +170,22 @@ describe Hive::Messages::Job, type: :model do
         expect(stubbed_request).to have_been_requested
       end
     end
+
+    describe "#error" do
+
+      let!(:stubbed_request) do
+        stub_request(:patch, Hive::Paths::Jobs.error_url(job_id))
+        .with( body: {job_id: job_id}.to_json, headers: { "Content-Type" => "application/json" } )
+        .to_return( body: remote_job.to_json )
+      end
+
+      before(:each) do
+        Hive::Messages::Job.new(job_id: job_id).error
+      end
+
+      it "made the request to start the job" do
+        expect(stubbed_request).to have_been_requested
+      end
+    end
   end
 end

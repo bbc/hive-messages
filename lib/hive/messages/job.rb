@@ -51,6 +51,10 @@ module Hive
       def end
         self.patch(uri: Hive::Paths::Jobs.end_url(self.job_id), as: "application/json")
       end
+
+      def error
+        self.patch(uri: Hive::Paths::Jobs.error_url(self.job_id), as: "application/json")
+      end
     end
   end
 end
