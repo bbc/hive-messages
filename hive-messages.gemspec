@@ -19,10 +19,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "virtus"
-  spec.add_dependency "roar"
+  spec.add_dependency "roar", '~> 0.12.9'
   spec.add_dependency "activemodel"
   spec.add_dependency "activesupport"
-
   spec.add_development_dependency "rspec", "~> 2.14.1"
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"
