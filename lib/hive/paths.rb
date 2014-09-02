@@ -1,5 +1,6 @@
 require "hive/paths/queues"
 require "hive/paths/jobs"
+require "hive/paths/artifacts"
 
 module Hive
   module Paths
