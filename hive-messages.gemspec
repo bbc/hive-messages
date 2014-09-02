@@ -22,6 +22,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activemodel"
   spec.add_dependency "activesupport"
   spec.add_dependency "version"
+  spec.add_dependency "multipart-post"
+  spec.add_dependency "mimemagic"
 
   spec.add_development_dependency "rspec", "~> 2.14.1"
   spec.add_development_dependency "bundler", "~> 1.6"

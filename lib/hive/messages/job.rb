@@ -1,6 +1,9 @@
 require 'virtus/attribute/execution_variables'
 require 'roar/representer/json'
 require 'roar/representer/feature/client'
+require 'net/http/post/multipart'
+require 'mimemagic'
+require 'pathname'
 
 module Hive
   module Messages
@@ -46,6 +49,20 @@ module Hive
           self.send("#{count_key}=", count_value)
         end
         self.patch(uri: Hive::Paths::Jobs.update_counts_url(self.job_id), as: "application/json")
+      end
+
+      def report_artifact(artifact_path)
+        url = URI.parse(Hive::Paths::Artifacts.create_url(self.job_id))
+        mime =  MimeMagic.by_path(artifact_path)
+        basename = Pathname.new(artifact_path).basename.to_s
+
+        File.open(artifact_path) do |artifact|
+          req = Net::HTTP::Post::Multipart.new url.path,
+                                               "data" => UploadIO.new(artifact, mime.type, basename)
+          res = Net::HTTP.start(url.host, url.port) do |http|
+            http.request(req)
+          end
+        end
       end
 
       def end
