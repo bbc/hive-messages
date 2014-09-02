@@ -13,6 +13,10 @@ module Hive
           "#{job_base(job_id)}/update_counts"
         end
 
+        def report_artifacts_url(job_id)
+          "#{job_base(job_id)}/report_artifacts"
+        end
+
         def end_url(job_id)
           "#{job_base(job_id)}/end"
         end
