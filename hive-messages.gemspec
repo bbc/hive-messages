@@ -1,7 +1,6 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'hive/messages/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "hive-messages"
@@ -22,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "roar", '~> 0.12.9'
   spec.add_dependency "activemodel"
   spec.add_dependency "activesupport"
+  spec.add_dependency "version"
 
   spec.add_development_dependency "rspec", "~> 2.14.1"
   spec.add_development_dependency "bundler", "~> 1.6"
@@ -29,5 +29,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "shoulda-matchers"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "webmock"
-  spec.add_development_dependency "version"
 end
