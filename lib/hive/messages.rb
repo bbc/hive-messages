@@ -1,3 +1,4 @@
+require "version"
 require "virtus"
 require "roar/representer/json"
 require "openssl"
@@ -20,6 +21,7 @@ require "hive/messages/job"
 
 module Hive
   module Messages
+    is_versioned
 
     class << self
       attr_accessor :configuration
