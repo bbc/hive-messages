@@ -9,8 +9,8 @@ module Hive
           "#{job_base(job_id)}/start"
         end
 
-        def update_url(job_id)
-          "#{job_base(job_id)}/update"
+        def update_counts_url(job_id)
+          "#{job_base(job_id)}/update_counts"
         end
 
         def end_url(job_id)

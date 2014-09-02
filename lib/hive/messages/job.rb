@@ -19,6 +19,10 @@ module Hive
       attribute :execution_variables, ExecutionVariables
       attribute :reservation_details, Hash
       attribute :device_id, Integer
+      attribute :running_count, Integer
+      attribute :failed_count, Integer
+      attribute :errored_count, Integer
+      attribute :passed_count, Integer
 
       validates :command, :job_id, :repository, :execution_directory, :target, :execution_variables, presence: true
 
@@ -34,6 +38,14 @@ module Hive
       def start(device_id)
         self.device_id = device_id
         self.patch(uri: Hive::Paths::Jobs.start_url(self.job_id), as: "application/json")
+      end
+
+      def update_counts(counts)
+        counts = counts.slice(:running_count, :failed_count, :errored_count, :passed_count)
+        counts.each_pair do |count_key, count_value|
+          self.send("#{count_key}=", count_value)
+        end
+        self.patch(uri: Hive::Paths::Jobs.update_counts_url(self.job_id), as: "application/json")
       end
 
       def end
