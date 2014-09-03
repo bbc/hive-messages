@@ -122,7 +122,7 @@ describe Hive::Messages::Job, type: :model do
     end
 
 
-    describe "#update_counts" do
+    describe "#update_results" do
 
       let(:device_id) { 33 }
 
@@ -140,7 +140,7 @@ describe Hive::Messages::Job, type: :model do
       }
 
       let!(:stubbed_request) do
-        stub_request(:patch, Hive::Paths::Jobs.update_counts_url(job_id))
+        stub_request(:patch, Hive::Paths::Jobs.update_results_url(job_id))
         .with( body:    {job_id:job_id}.merge(counts).to_json,
                headers: { "Content-Type" => "application/json" }
               )
@@ -148,7 +148,7 @@ describe Hive::Messages::Job, type: :model do
       end
 
       before(:each) do
-        local_job.update_counts(counts)
+        local_job.update_results(counts)
       end
 
       it "made the request to start the job" do

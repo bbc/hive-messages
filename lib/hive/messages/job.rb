@@ -44,12 +44,12 @@ module Hive
         self.patch(uri: Hive::Paths::Jobs.start_url(self.job_id), as: "application/json")
       end
 
-      def update_counts(counts)
+      def update_results(counts)
         counts = counts.slice(:running_count, :failed_count, :errored_count, :passed_count)
         counts.each_pair do |count_key, count_value|
           self.send("#{count_key}=", count_value)
         end
-        self.patch(uri: Hive::Paths::Jobs.update_counts_url(self.job_id), as: "application/json")
+        self.patch(uri: Hive::Paths::Jobs.update_results_url(self.job_id), as: "application/json")
       end
 
       def report_artifact(artifact_path)
