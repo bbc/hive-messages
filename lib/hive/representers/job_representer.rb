@@ -15,6 +15,7 @@ module Hive
       property :passed_count
       property :failed_count
       property :errored_count
+      property :state
     end
   end
 end

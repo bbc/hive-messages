@@ -26,7 +26,8 @@ describe Hive::Messages::Job, type: :model do
           target:              { application_url: "http://www.bbc.co.uk/mobile", application_url_parameters: "thing=value" },
           execution_variables: { job_id: 99, version: "1.0", queue_name: "nexus-4", run_id: "88", tests: ["test one", "test two"] },
           reservation_details: { hive_id: 99, pid: 1024 },
-          device_id:           23
+          device_id:           23,
+          state:               "running"
 
       }
     end
@@ -55,6 +56,7 @@ describe Hive::Messages::Job, type: :model do
       end
       its(:reservation_details) { should eq job_attributes[:reservation_details].stringify_keys }
       its(:device_id)           { should eq job_attributes[:device_id] }
+      its(:state)               { should eq job_attributes[:state] }
     end
   end
 
