@@ -18,10 +18,10 @@ describe Hive::Paths::Jobs do
       end
     end
 
-    describe ".update_counts_url" do
+    describe ".update_results_url" do
 
       it "generates a valid update counts url" do
-        expect(Hive::Paths::Jobs.update_counts_url(job_id)).to eq "#{base_path}/api/jobs/#{job_id.to_s}/update_counts"
+        expect(Hive::Paths::Jobs.update_results_url(job_id)).to eq "#{base_path}/api/jobs/#{job_id.to_s}/update_results"
       end
     end
 
