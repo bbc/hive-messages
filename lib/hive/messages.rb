@@ -11,6 +11,8 @@ else
   require "active_support/core_ext/object/to_json"
 end
 
+require "roar/representer/transport/net_http/request_patch"
+
 require "hive/paths"
 require "hive/messages/configuration"
 
