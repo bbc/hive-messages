@@ -6,7 +6,7 @@ module Hive
 
       attribute :base_path, String
       attribute :pem_file, String
-      attribute :ssl_verify_mode, String, default: OpenSSL::SSL::VERIFY_PEER
+      attribute :ssl_verify_mode, Integer, default: OpenSSL::SSL::VERIFY_PEER
     end
   end
 end

@@ -34,7 +34,6 @@ describe Roar::Representer::Transport::NetHTTP::Request do
 
       context "when Hive::Messages is configured to use a client pem_file" do
 
-
         let(:pem_file) { File.expand_path("spec/fixtures/sample.pem", Hive::Messages.root) }
 
         let(:pem) { File.read(pem_file) }
@@ -56,7 +55,7 @@ describe Roar::Representer::Transport::NetHTTP::Request do
         end
 
         it "set the ssl verify mode" do
-          expect(net_http_double).to_not have_received(:verify_mode=).with(configuration_options[:ssl_verify_mode])
+          expect(net_http_double).to have_received(:verify_mode=).with(configuration_options[:ssl_verify_mode])
         end
       end
 
