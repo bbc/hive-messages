@@ -17,6 +17,9 @@ require "hive/paths"
 require "hive/messages/configuration"
 
 require "hive/representers/job_representer"
+require "hive/representers/artifact_representer"
+
+
 require "hive/messages/execution_variables_base"
 require "hive/messages/job"
 
