@@ -53,6 +53,8 @@ module Hive
           res = Net::HTTP.start(url.host, url.port) do |http|
             http.request(req)
           end
+
+          Hive::Messages::Artifact.new.from_json(res.body)
         end
       end
 
