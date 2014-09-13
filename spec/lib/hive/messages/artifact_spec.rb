@@ -7,6 +7,7 @@ describe Hive::Messages::Artifact, type: :model do
 
   describe "validations" do
 
+    it { should validate_presence_of(:artifact_id) }
     it { should validate_presence_of(:job_id) }
     it { should validate_presence_of(:asset_file_name) }
     it { should validate_presence_of(:asset_content_type) }
@@ -17,6 +18,7 @@ describe Hive::Messages::Artifact, type: :model do
 
     let(:artifact_attributes) do
       {
+          artifact_id:        321,
           job_id:             123,
           asset_file_name:    "screenshot1.png",
           asset_content_type: "image/png",
@@ -38,6 +40,7 @@ describe Hive::Messages::Artifact, type: :model do
       let(:artifact_message) { Hive::Messages::Artifact.new.from_json(artifact_attributes.to_json) }
       subject { artifact_message }
 
+      its(:artifact_id)        { should eq artifact_attributes[:artifact_id] }
       its(:job_id)             { should eq artifact_attributes[:job_id] }
       its(:asset_file_name)    { should eq artifact_attributes[:asset_file_name] }
       its(:asset_content_type) { should eq artifact_attributes[:asset_content_type] }

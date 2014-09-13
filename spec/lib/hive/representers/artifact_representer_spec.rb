@@ -5,6 +5,7 @@ describe Hive::Representers::ArtifactRepresenter do
   class TestArtifact
     include Virtus.model
 
+    attribute :artifact_id
     attribute :job_id
     attribute :asset_file_name
     attribute :asset_content_type
@@ -19,6 +20,7 @@ describe Hive::Representers::ArtifactRepresenter do
 
   let(:artifact_attributes) do
     {
+        artifact_id:        321,
         job_id:             123,
         asset_file_name:    "screenshot1.png",
         asset_content_type: "image/png",
@@ -38,6 +40,7 @@ describe Hive::Representers::ArtifactRepresenter do
 
     subject { downstream_artifact }
 
+    its(:artifact_id)              { should eq artifact_attributes[:artifact_id] }
     its(:job_id)              { should eq artifact_attributes[:job_id] }
     its(:asset_file_name)     { should eq artifact_attributes[:asset_file_name] }
     its(:asset_content_type)  { should eq artifact_attributes[:asset_content_type] }
