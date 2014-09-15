@@ -1,4 +1,4 @@
-Copyright (c) 2014 Paul Carey
+Copyright (c) 2014 BBC
 
 MIT License
 
