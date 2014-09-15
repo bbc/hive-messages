@@ -158,13 +158,15 @@ describe Hive::Messages::Job, type: :model do
 
     describe "#report_artifact" do
 
+      let(:remote_artifact) { Hive::Messages::Artifact.new(job_id: 99, asset_file_name: "screenshot_1.png", asset_content_type: "image/png", asset_file_size: 2300) }
+
       let!(:stubbed_request) do
         stub_request(:post, Hive::Paths::Artifacts.create_url(job_id))
         .with(
             body: "-------------RubyMultipartPost\r\nContent-Disposition: form-data; name=\"data\"; filename=\"#{artifact_basename}\"\r\nContent-Length: 26\r\nContent-Type: #{artifact_mime}\r\nContent-Transfer-Encoding: binary\r\n\r\nThis is a sample log file.\r\n-------------RubyMultipartPost--\r\n\r\n",
             headers: {'Accept'=>'*/*', 'Content-Length'=>'254', 'Content-Type'=>'multipart/form-data; boundary=-----------RubyMultipartPost', 'User-Agent'=>'Ruby'}
         )
-        .to_return( body: remote_job.to_json )
+        .to_return( body: remote_artifact.to_json )
       end
 
       let(:artifact_mime) { MimeMagic.by_path(artifact_path) }
@@ -172,8 +174,14 @@ describe Hive::Messages::Job, type: :model do
 
       let(:artifact_path) { File.expand_path("spec/fixtures/upload_sample.log", Hive::Messages.root) }
 
-      before(:each) do
-        Hive::Messages::Job.new(job_id: job_id).report_artifact(artifact_path)
+      let!(:returned_artifact) { Hive::Messages::Job.new(job_id: job_id).report_artifact(artifact_path) }
+
+      it "returns an Artifact object" do
+        expect(returned_artifact).to be_instance_of(Hive::Messages::Artifact)
+      end
+
+      it "populates the resulting Artifact with the attributes returned upstream" do
+        expect(returned_artifact.attributes).to eq remote_artifact.attributes
       end
 
       it "uploaded the artifact" do

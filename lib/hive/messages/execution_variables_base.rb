@@ -1,4 +1,3 @@
-require "active_model"
 
 module Hive
   module Messages

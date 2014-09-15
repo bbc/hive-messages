@@ -1,18 +1,8 @@
-require 'virtus/attribute/execution_variables'
-require 'roar/representer/json'
-require 'roar/representer/feature/client'
-require 'net/http/post/multipart'
-require 'mimemagic'
-require 'pathname'
 
 module Hive
   module Messages
-    class Job
-      include Virtus.model
-      include ActiveModel::Validations
-      include Roar::Representer::JSON
+    class Job < Hive::Messages::Base
       include Hive::Representers::JobRepresenter
-      include Roar::Representer::Feature::Client
 
       attribute :command, String
       attribute :job_id, Integer
@@ -63,6 +53,8 @@ module Hive
           res = Net::HTTP.start(url.host, url.port) do |http|
             http.request(req)
           end
+
+          Hive::Messages::Artifact.new.from_json(res.body)
         end
       end
 
