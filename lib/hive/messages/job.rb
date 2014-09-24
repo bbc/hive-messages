@@ -45,11 +45,12 @@ module Hive
       def report_artifact(artifact_path)
         url = URI.parse(Hive::Paths::Artifacts.create_url(self.job_id))
         mime =  MimeMagic.by_path(artifact_path)
+        mime_type = mime ? mime.type : 'text/plain'
         basename = Pathname.new(artifact_path).basename.to_s
 
         File.open(artifact_path) do |artifact|
           req = Net::HTTP::Post::Multipart.new url.path,
-                                               "data" => UploadIO.new(artifact, mime.type, basename)
+                                               "data" => UploadIO.new(artifact, mime_type, basename)
           res = Net::HTTP.start(url.host, url.port) do |http|
             http.request(req)
           end
