@@ -44,17 +44,29 @@ module Hive
 
       def report_artifact(artifact_path)
         url = URI.parse(Hive::Paths::Artifacts.create_url(self.job_id))
+
         mime =  MimeMagic.by_path(artifact_path)
-        mime_type = mime ? mime.type : 'text/plain'
         basename = Pathname.new(artifact_path).basename.to_s
 
+        pem = File.read(Hive::Messages.configuration.pem_file)
+        ssl_verify_mode = Hive::Messages.configuration.ssl_verify_mode
+
+        if pem
+          args = {
+            :use_ssl => url.instance_of?(URI::HTTPS),
+            :cert => OpenSSL::X509::Certificate.new(pem),
+            :key => OpenSSL::PKey::RSA.new(pem),
+            :verify_mode => ssl_verify_mode
+          }
+        end
+
+        mime_type = mime ? mime.type : 'text/plain'
+
         File.open(artifact_path) do |artifact|
-          req = Net::HTTP::Post::Multipart.new url.path,
-                                               "data" => UploadIO.new(artifact, mime_type, basename)
-          res = Net::HTTP.start(url.host, url.port, :use_ssl => url.instance_of?(URI::HTTPS) ) do |http|
+          req = Net::HTTP::Post::Multipart.new url.path, "data" => UploadIO.new(artifact, mime_type, basename)
+          res = Net::HTTP.start(url.host, url.port, args) do |http|
             http.request(req)
           end
-
           Hive::Messages::Artifact.new.from_json(res.body)
         end
       end
