@@ -51,7 +51,7 @@ module Hive
         File.open(artifact_path) do |artifact|
           req = Net::HTTP::Post::Multipart.new url.path,
                                                "data" => UploadIO.new(artifact, mime_type, basename)
-          res = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') do |http|
+          res = Net::HTTP.start(url.host, url.port, :use_ssl => url.instance_of?(URI::HTTPS) ) do |http|
             http.request(req)
           end
 
