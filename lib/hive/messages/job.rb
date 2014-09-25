@@ -45,26 +45,23 @@ module Hive
       def report_artifact(artifact_path)
         url = URI.parse(Hive::Paths::Artifacts.create_url(self.job_id))
 
-        mime =  MimeMagic.by_path(artifact_path)
         basename = Pathname.new(artifact_path).basename.to_s
 
-        pem = File.read(Hive::Messages.configuration.pem_file)
-        ssl_verify_mode = Hive::Messages.configuration.ssl_verify_mode
-
-        if pem
-          args = {
-            :use_ssl => url.instance_of?(URI::HTTPS),
-            :cert => OpenSSL::X509::Certificate.new(pem),
-            :key => OpenSSL::PKey::RSA.new(pem),
-            :verify_mode => ssl_verify_mode
-          }
-        end
-
+        mime =  MimeMagic.by_path(artifact_path)
         mime_type = mime ? mime.type : 'text/plain'
+
+        net_http_args = {:use_ssl => url.instance_of?(URI::HTTPS)}
+
+        if Hive::Messages.configuration.pem_file
+          pem = File.read(Hive::Messages.configuration.pem_file)
+          net_http_args[:cert] = OpenSSL::X509::Certificate.new(pem)
+          net_http_args[:key] = OpenSSL::PKey::RSA.new(pem)
+          net_http_args[:verify_mode] = Hive::Messages.configuration.ssl_verify_mode
+        end
 
         File.open(artifact_path) do |artifact|
           req = Net::HTTP::Post::Multipart.new url.path, "data" => UploadIO.new(artifact, mime_type, basename)
-          res = Net::HTTP.start(url.host, url.port, args) do |http|
+          res = Net::HTTP.start(url.host, url.port, net_http_args) do |http|
             http.request(req)
           end
           Hive::Messages::Artifact.new.from_json(res.body)
