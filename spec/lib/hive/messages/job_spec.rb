@@ -72,19 +72,28 @@ describe Hive::Messages::Job, type: :model do
       before(:each) do
         Hive::Messages.configure { |config| config.base_path = base_path }
         stub_request(:patch, Hive::Paths::Queues.job_reservation_url(queue_names))
-          .with( body: {reservation_details: reservation_details}.to_json, headers: { "Content-Type" => "application/json" } )
-          .to_return( body: remote_job.to_json )
+        .with( body: {reservation_details: reservation_details}.to_json, headers: { "Content-Type" => "application/json" } )
+        .to_return( body: http_body, status: http_status )
       end
 
-      let(:reservation)         { Hive::Messages::Job.reserve(queue_names, reservation_details) }
+      subject { Hive::Messages::Job.reserve(queue_names, reservation_details) }
 
-      describe "reserved job" do
+      context "when a job is available for reservation" do
 
-        subject { Hive::Messages::Job.reserve(queue_names, reservation_details) }
+        let(:http_status) { 200 }
+        let(:http_body) { remote_job.to_json }
 
         its(:job_id) { should eq remote_job.job_id }
         its(:command) { should eq remote_job.command }
         its(:repository) { should eq remote_job.repository }
+      end
+
+      context "when NO job is available for reservation" do
+
+        let(:http_status) { 404 }
+        let(:http_body) { nil }
+
+        it { should be_nil }
       end
     end
   end

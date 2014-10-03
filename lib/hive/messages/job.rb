@@ -25,7 +25,11 @@ module Hive
         def reserve(queues, reservation_details)
           job = self.new
           job.reservation_details = reservation_details
-          job.patch(uri: Hive::Paths::Queues.job_reservation_url(queues), as: "application/json")
+          begin
+            job.patch(uri: Hive::Paths::Queues.job_reservation_url(queues), as: "application/json")
+          rescue Roar::Representer::Transport::Errors::ClientErrors::NotFoundError
+            nil
+          end
         end
       end
 
