@@ -9,10 +9,6 @@ describe Hive::Messages::Job, type: :model do
 
     it { should validate_presence_of(:command) }
     it { should validate_presence_of(:job_id) }
-    it { should validate_presence_of(:repository) }
-    it { should validate_presence_of(:execution_directory) }
-    it { should validate_presence_of(:target) }
-    it { should validate_presence_of(:execution_variables) }
   end
 
   describe "serialization" do
