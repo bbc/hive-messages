@@ -18,7 +18,7 @@ module Hive
       attribute :passed_count, Integer
       attribute :state, String
 
-      validates :command, :job_id, :repository, :execution_directory, :target, :execution_variables, presence: true
+      validates :command, :job_id, presence: true
 
       class << self
 
