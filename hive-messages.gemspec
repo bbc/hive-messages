@@ -4,9 +4,9 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "hive-messages"
-  spec.version       = File.read('VERSION')
-  spec.authors       = ["Paul Carey"]
-  spec.email         = ["paul.carey@ignition.it"]
+  spec.version       = '0.3.0'
+  spec.authors       = ["David Buckhurst", "Paul Carey"]
+  spec.email         = ["david.buckhurst@bbc.co.uk"]
   spec.summary       = %q{Hive communication library.}
   spec.description   = %q{Hive Messages, communications between hive components.}
   spec.homepage      = ""
@@ -18,10 +18,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "virtus"
-  spec.add_dependency "roar", '0.2.1.bbc'
+  spec.add_dependency "roar"
   spec.add_dependency "activemodel"
   spec.add_dependency "activesupport"
-  spec.add_dependency "version"
   spec.add_dependency "multipart-post"
   spec.add_dependency "mimemagic"
 

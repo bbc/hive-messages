@@ -1,7 +1,7 @@
 module Hive
   module Representers
     module JobRepresenter
-      include Roar::Representer::JSON
+      include Roar::JSON
 
       property :command
       property :job_id

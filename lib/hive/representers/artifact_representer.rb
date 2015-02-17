@@ -1,7 +1,7 @@
 module Hive
   module Representers
     module ArtifactRepresenter
-      include Roar::Representer::JSON
+      include Roar::JSON
 
       property :artifact_id
       property :job_id

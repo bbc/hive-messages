@@ -1,3 +1,4 @@
+require 'hive/messages/nil_job'
 
 module Hive
   module Messages
@@ -27,8 +28,8 @@ module Hive
           job.reservation_details = reservation_details
           begin
             job.patch(uri: Hive::Paths::Queues.job_reservation_url(queues), as: "application/json")
-          rescue Roar::Representer::Transport::Errors::ClientErrors::NotFoundError
-            nil
+          rescue => e
+            Hive::Messages::NilJob.new(e)
           end
         end
       end

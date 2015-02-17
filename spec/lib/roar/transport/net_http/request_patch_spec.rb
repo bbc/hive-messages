@@ -13,7 +13,7 @@ class OpenSSL::PKey::RSA
   end
 end
 
-describe Roar::Representer::Transport::NetHTTP::Request do
+describe Roar::Transport::NetHTTP::Request do
 
   describe "class methods" do
 
@@ -29,7 +29,7 @@ describe Roar::Representer::Transport::NetHTTP::Request do
           end
         end
         Net::HTTP.stub(new: net_http_double)
-        Roar::Representer::Transport::NetHTTP::Request.new(options)
+        Roar::Transport::NetHTTP::Request.new(options)
       end
 
       context "when Hive::Messages is configured to use a client pem_file" do
