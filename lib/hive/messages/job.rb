@@ -18,6 +18,8 @@ module Hive
       attribute :errored_count, Integer
       attribute :passed_count, Integer
       attribute :state, String
+      attribute :result, String
+      attribute :exit_value, Integer
 
       validates :command, :job_id, presence: true
 
