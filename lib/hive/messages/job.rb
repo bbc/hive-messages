@@ -36,9 +36,19 @@ module Hive
         end
       end
 
-      def start(device_id)
+      def prepare(device_id)
+        self.device_id = device_id
+        self.patch(uri: Hive::Paths::Jobs.prepare_url(self.job_id), as: "application/json")
+      end
+
+      def start
         self.device_id = device_id
         self.patch(uri: Hive::Paths::Jobs.start_url(self.job_id), as: "application/json")
+      end
+
+      def end(exit_value)
+        self.send("#{exit_value}=", exit_value)
+        self.patch(uri: Hive::Paths::Jobs.end_url(self.job_id), as: "application/json")
       end
 
       def update_results(counts)
@@ -75,8 +85,8 @@ module Hive
         end
       end
 
-      def end
-        self.patch(uri: Hive::Paths::Jobs.end_url(self.job_id), as: "application/json")
+      def complete
+        self.patch(uri: Hive::Paths::Jobs.complete_url(self.job_id), as: "application/json")
       end
 
       def error
