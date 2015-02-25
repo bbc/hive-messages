@@ -20,6 +20,7 @@ module Hive
       attribute :state, String
       attribute :result, String
       attribute :exit_value, Integer
+      attribute :message, String
 
       validates :command, :job_id, presence: true
 
@@ -47,7 +48,7 @@ module Hive
       end
 
       def end(exit_value)
-        self.send("#{exit_value}=", exit_value)
+        self.exit_value = exit_value
         self.patch(uri: Hive::Paths::Jobs.end_url(self.job_id), as: "application/json")
       end
 
@@ -89,7 +90,8 @@ module Hive
         self.patch(uri: Hive::Paths::Jobs.complete_url(self.job_id), as: "application/json")
       end
 
-      def error
+      def error(message)
+        self.message = message
         self.patch(uri: Hive::Paths::Jobs.error_url(self.job_id), as: "application/json")
       end
     end

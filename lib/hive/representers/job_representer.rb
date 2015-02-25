@@ -18,6 +18,7 @@ module Hive
       property :state
       property :result
       property :exit_value
+      property :message
     end
   end
 end
