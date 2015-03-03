@@ -43,7 +43,6 @@ module Hive
       end
 
       def start
-        self.device_id = device_id
         self.patch(uri: Hive::Paths::Jobs.start_url(self.job_id), as: "application/json")
       end
 
