@@ -1,7 +1,6 @@
 require "virtus"
-require "roar/representer/json"
+require "roar/json"
 require "openssl"
-require "version"
 require "active_model"
 
 require "active_support/version"
@@ -12,7 +11,7 @@ else
   require "active_support/core_ext/object/to_json"
 end
 
-require "roar/representer/transport/net_http/request_patch"
+require "roar/transport/net_http/request_patch"
 
 require "hive/paths"
 require "hive/messages/configuration"
@@ -28,7 +27,6 @@ require "hive/messages/artifact"
 
 module Hive
   module Messages
-    is_versioned
 
     class << self
       attr_accessor :configuration

@@ -1,3 +1,4 @@
+require 'hive/messages/nil_job'
 
 module Hive
   module Messages
@@ -17,6 +18,9 @@ module Hive
       attribute :errored_count, Integer
       attribute :passed_count, Integer
       attribute :state, String
+      attribute :result, String
+      attribute :exit_value, Integer
+      attribute :message, String
 
       validates :command, :job_id, presence: true
 
@@ -27,15 +31,24 @@ module Hive
           job.reservation_details = reservation_details
           begin
             job.patch(uri: Hive::Paths::Queues.job_reservation_url(queues), as: "application/json")
-          rescue Roar::Representer::Transport::Errors::ClientErrors::NotFoundError
-            nil
+          rescue => e
+            Hive::Messages::NilJob.new(e)
           end
         end
       end
 
-      def start(device_id)
+      def prepare(device_id)
         self.device_id = device_id
+        self.patch(uri: Hive::Paths::Jobs.prepare_url(self.job_id), as: "application/json")
+      end
+
+      def start
         self.patch(uri: Hive::Paths::Jobs.start_url(self.job_id), as: "application/json")
+      end
+
+      def end(exit_value)
+        self.exit_value = exit_value
+        self.patch(uri: Hive::Paths::Jobs.end_url(self.job_id), as: "application/json")
       end
 
       def update_results(counts)
@@ -72,11 +85,12 @@ module Hive
         end
       end
 
-      def end
-        self.patch(uri: Hive::Paths::Jobs.end_url(self.job_id), as: "application/json")
+      def complete
+        self.patch(uri: Hive::Paths::Jobs.complete_url(self.job_id), as: "application/json")
       end
 
-      def error
+      def error(message)
+        self.message = message
         self.patch(uri: Hive::Paths::Jobs.error_url(self.job_id), as: "application/json")
       end
     end
