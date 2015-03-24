@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "virtus"
-  spec.add_dependency "roar"
+  spec.add_dependency "roar", ">= 1.0.0"
   spec.add_dependency "activemodel"
   spec.add_dependency "activesupport"
   spec.add_dependency "multipart-post"
