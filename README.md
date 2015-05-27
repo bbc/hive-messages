@@ -27,3 +27,9 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+## License
+
+Simple Stats Store is available to everyone under the terms of the MIT open source licence. Take a look at the LICENSE file in the code.
+
+Copyright (c) 2015 BBC
