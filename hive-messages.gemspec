@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "hive-messages"
-  spec.version       = '1.0.0'
+  spec.version       = '1.0.1'
   spec.authors       = ["David Buckhurst", "Paul Carey"]
   spec.email         = ["david.buckhurst@bbc.co.uk"]
   spec.summary       = %q{Hive communication library.}
@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activesupport"
   spec.add_dependency "multipart-post"
   spec.add_dependency "mimemagic"
+  spec.add_dependency "multi_json"
 
   spec.add_development_dependency "rspec", "~> 2.14.1"
   spec.add_development_dependency "bundler", "~> 1.6"
