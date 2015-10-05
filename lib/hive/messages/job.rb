@@ -21,6 +21,7 @@ module Hive
       attribute :result, String
       attribute :exit_value, Integer
       attribute :message, String
+      attribute :result_details, String
 
       validates :command, :job_id, presence: true
 
@@ -51,8 +52,9 @@ module Hive
         self.patch(uri: Hive::Paths::Jobs.end_url(self.job_id), as: "application/json")
       end
 
-      def update_results(counts)
-        counts = counts.slice(:running_count, :failed_count, :errored_count, :passed_count)
+      def update_results(details)
+        self.result_details = details[:result_details]
+        counts = details.slice(:running_count, :failed_count, :errored_count, :passed_count)
         counts.each_pair do |count_key, count_value|
           self.send("#{count_key}=", count_value)
         end
