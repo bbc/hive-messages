@@ -18,6 +18,10 @@ describe Hive::Representers::JobRepresenter do
     attribute :failed_count
     attribute :state
     attribute :errored_count
+    attribute :result
+    attribute :exit_value
+    attribute :message
+    attribute :result_details
 
     attribute :extra
   end
@@ -48,7 +52,11 @@ describe Hive::Representers::JobRepresenter do
         failed_count:        2,
         errored_count:       1,
         state:               "running",
-        extra:               "thing"
+        extra:               "thing",
+        result:              "test result",
+        exit_value:          0,
+        message:             "Hello, mum",
+        result_details:      "Blah!"
     }
   end
 
@@ -77,6 +85,12 @@ describe Hive::Representers::JobRepresenter do
     its(:failed_count)        { should eq job_attributes[:failed_count] }
     its(:errored_count)       { should eq job_attributes[:errored_count] }
     its(:state)               { should eq job_attributes[:state] }
+    its(:result)              { should eq job_attributes[:result] }
+    its(:exit_value)          { should eq job_attributes[:exit_value] }
+    its(:message)             { should eq job_attributes[:message] }
+    its(:result_details)      { should eq job_attributes[:result_details] }
+
+    # Attribute that should be ignored
     its(:extra)               { should be_nil }
   end
 end
