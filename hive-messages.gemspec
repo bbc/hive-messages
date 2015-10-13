@@ -17,18 +17,17 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "virtus"
-  spec.add_dependency "roar", ">= 1.0.0"
-  spec.add_dependency "activemodel"
-  spec.add_dependency "activesupport"
-  spec.add_dependency "multipart-post"
-  spec.add_dependency "mimemagic"
-  spec.add_dependency "multi_json"
+  spec.add_dependency "virtus", "~> 1.0"
+  spec.add_dependency "roar", "~> 1.0"
+  spec.add_dependency "activemodel", "~> 4.2"
+  spec.add_dependency "activesupport", "~> 4.2"
+  spec.add_dependency "multipart-post", "~> 2.0"
+  spec.add_dependency "mimemagic", "~> 0.3"
+  spec.add_dependency "multi_json", "~> 1.11"
 
-  spec.add_development_dependency "rspec", "~> 2.14.1"
+  spec.add_development_dependency "rspec", "~> 2.14"
   spec.add_development_dependency "bundler", "~> 1.6"
-  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rake", "~> 10.4"
   spec.add_development_dependency "shoulda-matchers", "~> 2.8"
-  spec.add_development_dependency "pry"
-  spec.add_development_dependency "webmock"
+  spec.add_development_dependency "webmock", "~> 1.21"
 end
