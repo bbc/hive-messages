@@ -87,6 +87,33 @@ module Hive
         end
       end
 
+      def fetch(uri_str, limit = 10)
+        raise ArgumentError, 'too many HTTP redirects' if limit == 0
+
+        uri = URI.parse(uri_str)
+
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        pem = File.read(Hive::Messages.configuration.pem_file)
+        http.cert = OpenSSL::X509::Certificate.new(pem)
+        http.key = OpenSSL::PKey::RSA.new(pem)
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+        request = Net::HTTP::Get.new(uri)
+        response = http.request(request)
+
+        case response
+        when Net::HTTPSuccess then
+          response
+        when Net::HTTPRedirection then
+          location = response['location']
+          warn "redirected to #{location}"
+          fetch(location, limit - 1)
+        else
+          response.value
+        end
+      end
+
       def complete
         self.patch(uri: Hive::Paths::Jobs.complete_url(self.job_id), as: "application/json")
       end
