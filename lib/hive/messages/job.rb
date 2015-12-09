@@ -69,21 +69,35 @@ module Hive
         mime =  MimeMagic.by_path(artifact_path)
         mime_type = mime ? mime.type : 'text/plain'
 
-        net_http_args = {:use_ssl => url.instance_of?(URI::HTTPS)}
-
-        if Hive::Messages.configuration.pem_file
-          pem = File.read(Hive::Messages.configuration.pem_file)
-          net_http_args[:cert] = OpenSSL::X509::Certificate.new(pem)
-          net_http_args[:key] = OpenSSL::PKey::RSA.new(pem)
-          net_http_args[:verify_mode] = Hive::Messages.configuration.ssl_verify_mode
-        end
+        net_http_args = http_args(url)
 
         File.open(artifact_path) do |artifact|
-          req = Net::HTTP::Post::Multipart.new url.path, "data" => UploadIO.new(artifact, mime_type, basename)
-          res = Net::HTTP.start(url.host, url.port, net_http_args) do |http|
-            http.request(req)
-          end
+          request = Net::HTTP::Post::Multipart.new url.path, "data" => UploadIO.new(artifact, mime_type, basename)
+          res = http_response(url, request, net_http_args)
           Hive::Messages::Artifact.new.from_json(res.body)
+        end
+      end
+
+      def fetch(uri_str, limit = 10)
+        raise ArgumentError, 'too many HTTP redirects' if limit == 0
+
+        url = URI.parse(uri_str) 
+        net_http_args = http_args(url)
+    
+        request = Net::HTTP::Get.new(url)
+        response = http_response(url, request, net_http_args)
+    
+        case response
+        when Net::HTTPSuccess then
+          response
+        when Net::HTTPRedirection then
+          location = response['location']
+          warn "redirected to #{location}"
+          fetch(location, limit - 1)
+        when Net::HTTPNotFound then
+          raise "Build not found at location #{uri_str}"
+        else
+          response.value
         end
       end
 
@@ -95,6 +109,26 @@ module Hive
         self.message = message
         self.patch(uri: Hive::Paths::Jobs.error_url(self.job_id), as: "application/json")
       end
+
+      private
+
+      def http_response(url, request, net_http_args)
+        Net::HTTP.start(url.host, url.port, net_http_args) do |http|
+            http.request(request)
+        end
+      end
+
+      def http_args(url)
+        net_http_args = {:use_ssl => url.instance_of?(URI::HTTPS)}
+        if Hive::Messages.configuration.pem_file
+          pem = File.read(Hive::Messages.configuration.pem_file)
+          net_http_args[:cert] = OpenSSL::X509::Certificate.new(pem)
+          net_http_args[:key] = OpenSSL::PKey::RSA.new(pem)
+          net_http_args[:verify_mode] = Hive::Messages.configuration.ssl_verify_mode
+        end
+        net_http_args
+      end
+      
     end
   end
 end
