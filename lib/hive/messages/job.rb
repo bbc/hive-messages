@@ -90,10 +90,10 @@ module Hive
       def fetch(uri_str, limit = 10)
         raise ArgumentError, 'too many HTTP redirects' if limit == 0
 
-        uri = URI.parse(uri_str)
+        uri = URI.parse(uri_str) 
 
         http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
+        http.use_ssl = true if uri.instance_of?(URI::HTTPS)
         pem = File.read(Hive::Messages.configuration.pem_file)
         http.cert = OpenSSL::X509::Certificate.new(pem)
         http.key = OpenSSL::PKey::RSA.new(pem)
@@ -109,6 +109,8 @@ module Hive
           location = response['location']
           warn "redirected to #{location}"
           fetch(location, limit - 1)
+        when Net::HTTPNotFound then
+          raise 'Build not found at location #{uri_str}'
         else
           response.value
         end
