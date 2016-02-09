@@ -22,6 +22,7 @@ module Hive
       attribute :exit_value, Integer
       attribute :message, String
       attribute :result_details, String
+      attribute :test_results, Hash
 
       validates :command, :job_id, presence: true
 

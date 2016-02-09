@@ -22,6 +22,7 @@ describe Hive::Representers::JobRepresenter do
     attribute :exit_value
     attribute :message
     attribute :result_details
+    attribute :test_results
 
     attribute :extra
   end
@@ -56,7 +57,8 @@ describe Hive::Representers::JobRepresenter do
         result:              "test result",
         exit_value:          0,
         message:             "Hello, mum",
-        result_details:      "Blah!"
+        result_details:      "Blah!",
+        test_results:        [ test_case: 'Testing', urn: '/tmp/test.txt', status: 'passed' ]
     }
   end
 
