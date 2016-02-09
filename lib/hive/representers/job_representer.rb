@@ -20,6 +20,7 @@ module Hive
       property :exit_value
       property :message
       property :result_details
+      property :test_results
     end
   end
 end
