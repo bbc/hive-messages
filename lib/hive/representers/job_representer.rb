@@ -21,6 +21,7 @@ module Hive
       property :message
       property :result_details
       property :test_results
+      property :log_files
     end
   end
 end
