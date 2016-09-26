@@ -23,6 +23,7 @@ describe Hive::Representers::JobRepresenter do
     attribute :message
     attribute :result_details
     attribute :test_results
+    attribute :log_files
 
     attribute :extra
   end
@@ -58,7 +59,8 @@ describe Hive::Representers::JobRepresenter do
         exit_value:          0,
         message:             "Hello, mum",
         result_details:      "Blah!",
-        test_results:        [ test_case: 'Testing', urn: '/tmp/test.txt', status: 'passed' ]
+        test_results:        [ test_case: 'Testing', urn: '/tmp/test.txt', status: 'passed' ],
+        log_files:           { "stdout" => 'Standard out' }
     }
   end
 
@@ -91,6 +93,7 @@ describe Hive::Representers::JobRepresenter do
     its(:exit_value)          { should eq job_attributes[:exit_value] }
     its(:message)             { should eq job_attributes[:message] }
     its(:result_details)      { should eq job_attributes[:result_details] }
+    its(:log_files)           { should eq job_attributes[:log_files] }
 
     # Attribute that should be ignored
     its(:extra)               { should be_nil }

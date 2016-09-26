@@ -23,6 +23,7 @@ module Hive
       attribute :message, String
       attribute :result_details, String
       attribute :test_results, Hash
+      attribute :log_files, Hash
 
       validates :command, :job_id, presence: true
 
