@@ -107,25 +107,39 @@ describe Hive::Messages::Job, type: :model do
       Hive::Messages.configure { |config| config.base_path = base_path }
     end
 
-    describe "#start" do
+    describe "#prepare" do
       let(:device_id) { 33 }
 
       let!(:stubbed_request) do
-        stub_request(:patch, Hive::Paths::Jobs.start_url(job_id))
+        stub_request(:patch, Hive::Paths::Jobs.prepare_url(job_id))
         .with( body: {job_id: job_id, device_id: device_id}.to_json, headers: { "Content-Type" => "application/json" } )
         .to_return( body: remote_job.to_json )
       end
 
       before(:each) do
-        pending "Behaviour of start has changed"
-        local_job.start(device_id)
+        local_job.prepare(device_id)
+      end
+
+      it "made the request to prepare the job" do
+        expect(stubbed_request).to have_been_requested
+      end
+    end
+
+    describe "#start" do
+      let!(:stubbed_request) do
+        stub_request(:patch, Hive::Paths::Jobs.start_url(job_id))
+        .with( body: {job_id: job_id}.to_json, headers: { "Content-Type" => "application/json" } )
+        .to_return( body: remote_job.to_json )
+      end
+
+      before(:each) do
+        local_job.start
       end
 
       it "made the request to start the job" do
         expect(stubbed_request).to have_been_requested
       end
     end
-
 
     describe "#update_results" do
 
@@ -198,16 +212,32 @@ describe Hive::Messages::Job, type: :model do
 
       let!(:stubbed_request) do
         stub_request(:patch, Hive::Paths::Jobs.end_url(job_id))
+        .with( body: {job_id: job_id, exit_value: 0}.to_json, headers: { "Content-Type" => "application/json" } )
+        .to_return( body: remote_job.to_json )
+      end
+
+      before(:each) do
+        Hive::Messages::Job.new(job_id: job_id).end 0
+      end
+
+      it "made the request to end the job" do
+        expect(stubbed_request).to have_been_requested
+      end
+    end
+
+    describe "#complete" do
+
+      let!(:stubbed_request) do
+        stub_request(:patch, Hive::Paths::Jobs.complete_url(job_id))
         .with( body: {job_id: job_id}.to_json, headers: { "Content-Type" => "application/json" } )
         .to_return( body: remote_job.to_json )
       end
 
       before(:each) do
-        pending "Behaviour of new has changed"
-        Hive::Messages::Job.new(job_id: job_id).end
+        Hive::Messages::Job.new(job_id: job_id).complete
       end
 
-      it "made the request to start the job" do
+      it "made the request to complete the job" do
         expect(stubbed_request).to have_been_requested
       end
     end
@@ -216,13 +246,12 @@ describe Hive::Messages::Job, type: :model do
 
       let!(:stubbed_request) do
         stub_request(:patch, Hive::Paths::Jobs.error_url(job_id))
-        .with( body: {job_id: job_id}.to_json, headers: { "Content-Type" => "application/json" } )
+        .with( body: {job_id: job_id, message: 'Test error message'}.to_json, headers: { "Content-Type" => "application/json" } )
         .to_return( body: remote_job.to_json )
       end
 
       before(:each) do
-        pending "Behaviour of new has changed"
-        Hive::Messages::Job.new(job_id: job_id).error
+        Hive::Messages::Job.new(job_id: job_id).error 'Test error message'
       end
 
       it "made the request to start the job" do
