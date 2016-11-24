@@ -8,6 +8,7 @@ module Hive
       attribute :command, String
       attribute :job_id, Integer
       attribute :repository, String
+      attribute :branch, String
       attribute :execution_directory, String
       attribute :target, Hash
       attribute :execution_variables, ExecutionVariables
