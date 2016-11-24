@@ -6,6 +6,7 @@ module Hive
       property :command
       property :job_id
       property :repository
+      property :branch
       property :execution_directory
       property :target
       property :execution_variables
