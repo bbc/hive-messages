@@ -11,6 +11,7 @@ module Hive
       attribute :branch, String
       attribute :execution_directory, String
       attribute :target, Hash
+      attribute :install_build, Boolean
       attribute :execution_variables, ExecutionVariables
       attribute :reservation_details, Hash
       attribute :device_id, Integer

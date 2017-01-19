@@ -9,6 +9,7 @@ module Hive
       property :branch
       property :execution_directory
       property :target
+      property :install_build
       property :execution_variables
       property :reservation_details
       property :device_id

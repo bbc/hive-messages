@@ -8,8 +8,10 @@ describe Hive::Representers::JobRepresenter do
     attribute :command
     attribute :job_id
     attribute :repository
+    attribute :branch
     attribute :execution_directory
     attribute :target
+    attribute :install_build
     attribute :execution_variables
     attribute :reservation_details
     attribute :device_id
@@ -44,8 +46,10 @@ describe Hive::Representers::JobRepresenter do
         command:             "cmd",
         job_id:              99,
         repository:          "svn://",
+        branch:              "test_branch",
         execution_directory: ".",
         target:              target,
+        install_build:       true,
         execution_variables: execution_variables,
         reservation_details: reservation_details,
         device_id:           23,
@@ -79,8 +83,10 @@ describe Hive::Representers::JobRepresenter do
     its(:command)             { should eq job_attributes[:command] }
     its(:job_id)              { should eq job_attributes[:job_id] }
     its(:repository)          { should eq job_attributes[:repository] }
+    its(:branch)              { should eq job_attributes[:branch] }
     its(:execution_directory) { should eq job_attributes[:execution_directory] }
     its(:target)              { should eq job_attributes[:target] }
+    its(:install_build)       { should eq job_attributes[:install_build] }
     its(:execution_variables) { should eq execution_variables }
     its(:reservation_details) { should eq reservation_details }
     its(:device_id)           { should eq job_attributes[:device_id] }
